@@ -1,0 +1,34 @@
+.helper-chat {
+
+  &__working-zone {
+    display: flex;
+    margin-left: auto;
+    margin-right: auto;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  &__messages {
+    background-color: #fff;
+    min-height: 20rem;
+    border-radius: 10px;
+    margin-bottom: 0.5rem;
+  }
+
+  &__message {
+    border-radius: 10px;
+    color: #000;
+  }
+
+  &__user-name {
+    border: 1px solid wheat;
+    background-color: #19a93f;
+    padding: 0.5rem 1rem;
+    border-radius: 10px;
+    margin-bottom: 0.3rem;
+  }
+
+  &__user-name:hover {
+    cursor: pointer;
+  }
+}

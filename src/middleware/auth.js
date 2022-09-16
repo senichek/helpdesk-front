@@ -9,7 +9,6 @@ const authentification = (store) => (next) => async (action) => {
         case SIGN_UP: {
             const { name, email, password, password2, role } = action.payload;
             try {
-                debugger
                 const { data } = await axios.post(`${API_BASE_URL}/signup`, {
                     name,
                     email,

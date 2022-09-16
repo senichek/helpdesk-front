@@ -4,6 +4,8 @@ export const SIGN_UP = 'SIGN_UP';
 export const SIGN_UP_SUCCESS = 'SIGN_UP_SUCCESS';
 export const LOGIN_FAILED = 'LOGIN_FAILED';
 export const LOGOUT = 'LOGOUT';
+export const GET_SIMPLE_USERS = 'GET_SIMPLE_USERS';
+export const SET_SIMPLE_USERS = 'SET_SIMPLE_USERS';
 
 
 export const login = (data) => ({
@@ -33,4 +35,13 @@ export const setLoginFailure = (data) => ({
 
 export const logout = () => ({
     type: LOGOUT
+});
+
+export const getSimpleUsers = () => ({
+    type: GET_SIMPLE_USERS
+});
+
+export const setSimpleUsers = (data) => ({
+    type: SET_SIMPLE_USERS,
+    payload: data,
 });
