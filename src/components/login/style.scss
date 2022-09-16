@@ -1,0 +1,19 @@
+.signup-form {
+
+    a {
+        color: rgb(243, 239, 236);
+    }
+
+    margin-top: 5%;
+
+    &__input, &__button {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 0.5rem;
+        width: 20%;
+        padding: 0.3rem;
+        border-radius: 5px;
+        border: none;
+    }
+}
