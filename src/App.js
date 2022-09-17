@@ -32,12 +32,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        {loggedInUser.role === 'helper' &&
-          <Route path="/helperchat" element={<HelperChat />} />
-        }
-        {loggedInUser.role === 'user' &&
-          <Route path="/userchat" element={<UserChat />} />
-        }
+        <Route path="/helperchat" element={loggedInUser.role === 'helper' && <HelperChat />}/>
+        <Route path="/userchat" element={loggedInUser.role === 'user' && <UserChat />}/>
       </Routes>
     </div>
   );

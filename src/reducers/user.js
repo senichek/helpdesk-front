@@ -3,7 +3,9 @@ import {
   SIGN_UP_SUCCESS,
   LOGIN_FAILED,
   LOGOUT,
-  SET_SIMPLE_USERS
+  SET_SIMPLE_USERS,
+  SET_CONNECTED_CHAT_USERS,
+  SET_RECIPIENT
 } from "../store/actions";
 
 export const initialState = {
@@ -13,9 +15,11 @@ export const initialState = {
   email: "",
   token: "",
   role: "",
-  listOfSimpleUsers: [], // List of users who are not helpers or admins
+  simpleUsers: [], // List of users who are not helpers or admins.
+  connectedChatUsers: [],
   showSignUpSuccessMessage: false,
   showLoginFailureMessage: false,
+  recipient: "" // Person you write (send the message) to.
 };
 
 const userReducer = (state = initialState, action = {}) => {
@@ -36,8 +40,18 @@ const userReducer = (state = initialState, action = {}) => {
     case SET_SIMPLE_USERS:
       return {
         ...state,
-        listOfSimpleUsers: action.payload,
+        simpleUsers: action.payload,
       };
+    case SET_CONNECTED_CHAT_USERS:
+      return {
+        ...state,
+        connectedChatUsers: action.payload,
+        };
+        case SET_RECIPIENT:
+          return {
+            ...state,
+            recipient: action.payload,
+            };
     default:
       return state;
   }

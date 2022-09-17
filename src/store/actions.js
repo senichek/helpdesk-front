@@ -6,6 +6,8 @@ export const LOGIN_FAILED = 'LOGIN_FAILED';
 export const LOGOUT = 'LOGOUT';
 export const GET_SIMPLE_USERS = 'GET_SIMPLE_USERS';
 export const SET_SIMPLE_USERS = 'SET_SIMPLE_USERS';
+export const SET_CONNECTED_CHAT_USERS = 'SET_CONNECTED_CHAT_USERS';
+export const SET_RECIPIENT = 'SET_RECIPIENT';
 
 
 export const login = (data) => ({
@@ -43,5 +45,15 @@ export const getSimpleUsers = () => ({
 
 export const setSimpleUsers = (data) => ({
     type: SET_SIMPLE_USERS,
+    payload: data,
+});
+
+export const setConnectedChatUsers = (data) => ({
+    type: SET_CONNECTED_CHAT_USERS,
+    payload: data,
+});
+
+export const setRecipient = (data) => ({
+    type: SET_RECIPIENT,
     payload: data,
 });

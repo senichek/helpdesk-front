@@ -1,11 +1,13 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { getSimpleUsers } from '../../store/actions';
 import { useEffect } from 'react';
+import { setRecipient } from '../../store/actions';
 import './style.scss';
+import Chat from '../chat';
 
 const HelperChat = () => {
 
-    const users = useSelector((state) => state.user.listOfSimpleUsers);
+    const chatUsers = useSelector((state) => state.user.connectedChatUsers);
 
     const dispatch = useDispatch();
 
@@ -13,35 +15,19 @@ const HelperChat = () => {
         dispatch(getSimpleUsers());
     }, []);
 
-    const sendMessage = () => {
-        alert("Send msg");
+    const handleRecipient = (userId) => {
+        dispatch(setRecipient(userId));
     }
 
     return (
         <div className="helper-chat">
             <div className="helper-chat__working-zone">
                 <div className="helper-chat__users-list">
-                    {users.map(user => (
-                        <div className="helper-chat__user-name" key={user.id}>{user.name}</div>
+                    {chatUsers.map(user => (
+                        <div className="helper-chat__user-name" key={user.socketId} onClick={() => handleRecipient(user.userId)} >{user.userId}</div>
                         ))}
                 </div>
-                <div className="helper-chat__message-area">
-                <div className="helper-chat__messages">
-                    <div className="helper-chat__message">Test message</div>
-                    <div className="helper-chat__message">Test message</div>
-                    <div className="helper-chat__message">Test message</div>
-                    <div className="helper-chat__message">Test message</div>
-                    <div className="helper-chat__message">Test message</div>
-                    <div className="helper-chat__message">Test message</div>
-                    <div className="helper-chat__message">Test message</div>
-                    <div className="helper-chat__message">Test message</div>
-                </div>
-                <textarea className="helper-chat__message" id="helper-chat__message" name="helper-chat__message" rows="4" cols="50"></textarea>
-                </div>
-            </div>
-            <div className="helper-chat__btn-area">
-                
-                <button type="button" onClick={sendMessage}>Send message</button>
+                <Chat />
             </div>
         </div>
     );

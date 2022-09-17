@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { toast } from 'react-toastify';
 import { GET_SIMPLE_USERS, setSimpleUsers } from '../store/actions';
 import { API_BASE_URL } from '../constants';
 
