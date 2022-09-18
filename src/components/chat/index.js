@@ -1,8 +1,10 @@
-import { useEffect } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { CHAT_SERVER_URL } from '../../constants';
 import { setConnectedChatUsers } from '../../store/actions';
 import io from 'socket.io-client';
+import uuid from 'react-uuid';
+import './style.scss';
 
 // Private messaging:   https://socket.io/get-started/private-messaging-part-1/
 
@@ -10,29 +12,56 @@ const Chat = () => {
 
     const loggedInUser = useSelector((state) => state.user);
 
-    const socket = io(CHAT_SERVER_URL, { autoConnect: false });
+    let socket = useRef(null);
 
+    // By the default the recipient = ID of the logged-in user. All the
+    // users join their own room by default (room = userId)
     const recipient = useSelector((state) => state.user.recipient);
 
     const dispatch = useDispatch();
 
+    const [message, setMessage] = useState({});
+    const [messages, setMessages] = useState(["Test message"]);
+    
     useEffect(() => {
-        
-        socket.auth = { username: loggedInUser.id };
-        socket.connect();
+        socket.current = io(CHAT_SERVER_URL, { autoConnect: false });
+        socket.current.auth = { username: loggedInUser.id };
+        socket.current.connect();
 
-        socket.on("connected_chat_users", (users) => {
+        socket.current.on("connected_chat_users", (users) => {
             console.log("Connected chat users >>>", users);
             dispatch(setConnectedChatUsers(users));
             });
 
-            return () => {
-                socket.off('connected_chat_users');
-              };
-    }, []);
+        socket.current.on('receive_msg', (message) => {
+            setMessages([...messages, message]);
+        });
+
+        // If recipient changes, we join another room i.e. the room
+        // of new recipient (recipient = room)
+        if (recipient) {
+            socket.current.emit('join_room', recipient);
+        }
+
+        return () => {
+            socket.current.off('connected_chat_users');
+            socket.current.off('join_room');
+            };
+    }, [recipient, messages]);
+
+    const handleInputChange = (event) => {
+        const msg = {
+            id: uuid(),
+            sender: loggedInUser.name,
+            text: event.target.value
+        }
+        setMessage(msg);
+    }
 
     const sendMessage = () => {
-
+        setMessages([...messages, message]);
+        socket.current.emit('send_msg', message, recipient); // recipient = room
+        setMessage({});
     }
 
     return (
@@ -41,16 +70,21 @@ const Chat = () => {
                 <div className="chat__message-area">
                 <div className="chat__messages">
                 <p>You are talking to: {recipient}</p>
-                    <div className="chat__message">Test message</div>
-                    <div className="chat__message">Test message</div>
-                    <div className="chat__message">Test message</div>
-                    <div className="chat__message">Test message</div>
-                    <div className="chat__message">Test message</div>
-                    <div className="chat__message">Test message</div>
-                    <div className="chat__message">Test message</div>
-                    <div className="chat__message">Test message</div>
+                    {messages.map(msg => (
+                        <div className="chat__message" key={msg.id}>
+                            <div className="chat__message__sender">{msg.sender}</div>
+                            <div className="chat__message__text">{msg.text}</div>
+                        </div>
+                    ))}
                 </div>
-                <textarea className="chat__message" id="chat__message" name="chat__message" rows="4" cols="50"></textarea>
+                <textarea
+                    className="chat__message" 
+                    id="chat__message"
+                    name="chat__message"
+                    rows="4"
+                    cols="50"
+                    value={message.text}
+                    onChange={handleInputChange}></textarea>
                 </div>
             </div>
             <div className="chat__btn-area">

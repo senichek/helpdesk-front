@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
-import { setUser } from './store/actions';
+import { setUser, setRecipient } from './store/actions';
 import "./App.css";
 import Login from "./components/login";
 import Signup from "./components/signUp";
@@ -23,6 +23,10 @@ function App() {
     // Put the user in the state
     if (loggedInUser) {
       dispatch(setUser(loggedInUser));
+
+      // By the default the recipient = ID of the logged-in user. All the
+      // users join their own room by default (room = userId)
+      dispatch(setRecipient(loggedInUser.id));
   }
   }, []);
 
