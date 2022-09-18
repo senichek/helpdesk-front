@@ -20,8 +20,8 @@ const Chat = () => {
 
     const dispatch = useDispatch();
 
-    const [message, setMessage] = useState({});
-    const [messages, setMessages] = useState(["Test message"]);
+    const [inputMessage, setInputMessage] = useState("");
+    const [messages, setMessages] = useState([]);
     
     useEffect(() => {
         socket.current = io(CHAT_SERVER_URL, { autoConnect: false });
@@ -34,7 +34,6 @@ const Chat = () => {
             });
 
         return () => {
-            debugger
             socket.current.off('connected_chat_users');
             socket.current.disconnect();
             };
@@ -65,18 +64,22 @@ const Chat = () => {
     }, [messages])
 
     const handleInputChange = (event) => {
-        const msg = {
-            id: uuid(),
-            sender: loggedInUser.name,
-            text: event.target.value
-        }
-        setMessage(msg);
+        setInputMessage(event.target.value);
     }
 
     const sendMessage = () => {
-        setMessages([...messages, message]);
-        socket.current.emit('send_msg', message, recipient); // recipient = room
-        setMessage({});
+        const msg = {
+            id: uuid(),
+            sender: loggedInUser.name,
+            text: inputMessage
+        }
+        // Prevent sending empty strings
+        if (!inputMessage || inputMessage === "") {
+            return;
+        }
+        setMessages([...messages, msg]);
+        socket.current.emit('send_msg', msg, recipient); // recipient = room
+        setInputMessage("");
     }
 
     return (
@@ -98,7 +101,7 @@ const Chat = () => {
                     name="chat__message"
                     rows="4"
                     cols="50"
-                    value={message.text}
+                    value={inputMessage}
                     onChange={handleInputChange}></textarea>
                 </div>
             </div>
