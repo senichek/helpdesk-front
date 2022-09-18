@@ -33,10 +33,14 @@ const Chat = () => {
             dispatch(setConnectedChatUsers(users));
             });
 
-        socket.current.on('receive_msg', (message) => {
-            setMessages([...messages, message]);
-        });
+        return () => {
+            debugger
+            socket.current.off('connected_chat_users');
+            socket.current.disconnect();
+            };
+    }, []);
 
+    useEffect(() => {
         // If recipient changes, we join another room i.e. the room
         // of new recipient (recipient = room)
         if (recipient) {
@@ -44,10 +48,21 @@ const Chat = () => {
         }
 
         return () => {
-            socket.current.off('connected_chat_users');
             socket.current.off('join_room');
             };
-    }, [recipient, messages]);
+
+    }, [recipient])
+
+    useEffect(() => {
+        socket.current.on('receive_msg', (message) => {
+            setMessages([...messages, message]);
+        });
+
+        return () => {
+            socket.current.off('receive_msg');
+            };
+
+    }, [messages])
 
     const handleInputChange = (event) => {
         const msg = {

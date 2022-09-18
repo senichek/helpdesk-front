@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { LOGIN, setUser, SIGN_UP, setSignUpSuccess, setLoginFailure } from '../store/actions';
+import { LOGIN, setUser, SIGN_UP, setSignUpSuccess, setLoginFailure, setRecipient } from '../store/actions';
 import { API_BASE_URL } from '../constants';
 
 
@@ -47,6 +47,8 @@ const authentification = (store) => (next) => async (action) => {
                     password,
                 });
                 store.dispatch(setUser(data));
+                // All the users join their own room by default
+                store.dispatch(setRecipient(data.id));
                 // Store the user in localStorage
                 // Local storage only supports string datatype
                 localStorage.setItem('loggedInUser', JSON.stringify({...data, connectedAt: new Date()}));
