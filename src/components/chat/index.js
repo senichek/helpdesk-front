@@ -87,7 +87,7 @@ const Chat = () => {
             <div className="chat__working-zone">
                 <div className="chat__message-area">
                 <div className="chat__messages">
-                <p>You are talking to: {recipient}</p>
+                <p>Connected to the room: {recipient}</p>
                     {messages.map(msg => (
                         <div className="chat__message" key={msg.id}>
                             <div className="chat__message__sender">{msg.sender}</div>

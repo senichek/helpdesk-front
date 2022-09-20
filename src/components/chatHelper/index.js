@@ -8,6 +8,7 @@ import Chat from '../chat';
 const HelperChat = () => {
 
     const chatUsers = useSelector((state) => state.user.connectedChatUsers);
+    const loggedInUser = useSelector((state) => state.user);
 
     const dispatch = useDispatch();
 
@@ -24,6 +25,7 @@ const HelperChat = () => {
             <div className="helper-chat__working-zone">
                 <div className="helper-chat__users-list">
                     {chatUsers.map(user => (
+                        user.userId === loggedInUser.id ? null :
                         <div className="helper-chat__user-name" key={user.socketId} onClick={() => handleRecipient(user.userId)} >{user.userId}</div>
                         ))}
                 </div>
