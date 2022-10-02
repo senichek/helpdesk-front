@@ -25,10 +25,14 @@ const Chat = () => {
     
     useEffect(() => {
         socket.current = io(CHAT_SERVER_URL, { autoConnect: false });
-        socket.current.auth = { username: loggedInUser.id };
+        socket.current.auth = { 
+            username: loggedInUser.id,
+            role: loggedInUser.role
+        };
         socket.current.connect();
 
         socket.current.on("connected_chat_users", (users) => {
+            debugger
             console.log("Connected chat users >>>", users);
             dispatch(setConnectedChatUsers(users));
             });
