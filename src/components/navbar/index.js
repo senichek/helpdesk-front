@@ -1,11 +1,13 @@
 import { NavLink } from "react-router-dom";
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../store/actions';
 import './style.scss';
 
 const Navbar = () => {
 
     const dispatch = useDispatch();
+
+    const isLogged = useSelector((state) => state.user.logged);
 
     const handleLogout = () => {
         localStorage.removeItem("loggedInUser");
@@ -14,7 +16,9 @@ const Navbar = () => {
 
     return (
         <nav className="navbar">
-            <NavLink className='navbar__logout' to="/" onClick={handleLogout} >Logout</NavLink>
+            {isLogged &&
+                <NavLink className='navbar__logout' to="/" onClick={handleLogout} >Logout</NavLink>
+            }
         </nav>
     )
 }

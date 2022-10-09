@@ -14,7 +14,6 @@ const UserChat = ({ sendMsg }) => {
     }
 
     const handleSendMsg = () => {
-        //TODO добавить проверки что сообщение не ноль
         const message = {
             id: uuid(),
             text: inputMsg,

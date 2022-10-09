@@ -4,7 +4,6 @@ import uuid from 'react-uuid';
 import './style.scss';
 
 const HelperChat = ({ sendMsg }) => {
-    debugger
 
     const chatUsers = useSelector((state) => state.user.connectedChatUsers);
     const messages = useSelector((state) => state.user.messages);
@@ -23,7 +22,6 @@ const HelperChat = ({ sendMsg }) => {
     }
 
     const handleSendMsg = () => {
-        //TODO добавить проверки что сообщение не ноль
         const message = {
             id: uuid(),
             text: inputMsg,
@@ -36,6 +34,7 @@ const HelperChat = ({ sendMsg }) => {
         <div className="helper-chat">
             <div className="helper-chat__list_of_users">
                 {chatUsers.map(usr => (
+                    usr.role === 'user' && 
                     <div className="helper-chat__user_name" key={usr.userId} onClick={() => handleRecipient(usr.userId)} >{usr.userId}</div>
                 ))}
             </div>
