@@ -1,10 +1,12 @@
 import { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { CHAT_SERVER_URL } from '../../constants';
-import { setConnectedChatUsers } from '../../store/actions';
+import { setConnectedChatUsers, setMsg } from '../../store/actions';
 import io from 'socket.io-client';
 import uuid from 'react-uuid';
 import './style.scss';
+import UserChat from '../chatUser';
+import HelperChat from '../chatHelper';
 
 // Private messaging:   https://socket.io/get-started/private-messaging-part-1/
 
@@ -17,11 +19,9 @@ const Chat = () => {
     // By the default the recipient = ID of the logged-in user. All the
     // users join their own room by default (room = userId)
     const recipient = useSelector((state) => state.user.recipient);
+    const messages = useSelector((state) => state.user.messages);
 
     const dispatch = useDispatch();
-
-    const [inputMessage, setInputMessage] = useState("");
-    const [messages, setMessages] = useState([]);
     
     useEffect(() => {
         socket.current = io(CHAT_SERVER_URL, { autoConnect: false });
@@ -32,8 +32,8 @@ const Chat = () => {
         socket.current.connect();
 
         socket.current.on("connected_chat_users", (users) => {
-            debugger
             console.log("Connected chat users >>>", users);
+            debugger
             dispatch(setConnectedChatUsers(users));
             });
 
@@ -58,7 +58,12 @@ const Chat = () => {
 
     useEffect(() => {
         socket.current.on('receive_msg', (message) => {
-            setMessages([...messages, message]);
+            const msg = {
+                id: uuid(),
+                text: message,
+                date: new Date()
+            }
+            dispatch(setMsg(msg)); // Add message to the collection of existing ones
         });
 
         return () => {
@@ -67,51 +72,29 @@ const Chat = () => {
 
     }, [messages])
 
-    const handleInputChange = (event) => {
-        setInputMessage(event.target.value);
-    }
-
-    const sendMessage = () => {
-        const msg = {
-            id: uuid(),
-            sender: loggedInUser.name,
-            text: inputMessage
-        }
-        // Prevent sending empty strings
-        if (!inputMessage || inputMessage === "") {
+    const sendMessage = (msg) => {
+        if (msg.text === null || msg.text === '') {
             return;
         }
-        setMessages([...messages, msg]);
-        socket.current.emit('send_msg', msg, recipient); // recipient = room
-        setInputMessage("");
+
+        socket.current.emit('send_msg', msg.text, recipient);
+
+        const message = {
+            id: uuid(),
+            text: msg.text,
+            date: new Date()
+        }
+        dispatch(setMsg(message)); // Add message to the collection of existing ones
+
+        return () => {
+            socket.current.off('receive_msg');
+            };
     }
 
     return (
         <div className="chat">
-            <div className="chat__working-zone">
-                <div className="chat__message-area">
-                <div className="chat__messages">
-                <p>Connected to the room: {recipient}</p>
-                    {messages.map(msg => (
-                        <div className="chat__message" key={msg.id}>
-                            <div className="chat__message__sender">{msg.sender}</div>
-                            <div className="chat__message__text">{msg.text}</div>
-                        </div>
-                    ))}
-                </div>
-                <textarea
-                    className="chat__message" 
-                    id="chat__message"
-                    name="chat__message"
-                    rows="4"
-                    cols="50"
-                    value={inputMessage}
-                    onChange={handleInputChange}></textarea>
-                </div>
-            </div>
-            <div className="chat__btn-area">
-                <button type="button" onClick={sendMessage}>Send message</button>
-            </div>
+            {loggedInUser.role === 'user' && <UserChat sendMsg={sendMessage} />}
+            {loggedInUser.role === 'helper' && <HelperChat sendMsg={sendMessage} />}
         </div>
     );
 }

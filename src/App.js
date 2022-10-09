@@ -6,8 +6,7 @@ import "./App.css";
 import Login from "./components/login";
 import Signup from "./components/signUp";
 import Navbar from "./components/navbar";
-import HelperChat from "./components/chatHelper";
-import UserChat from "./components/chatUser";
+import Chat from "./components/chat";
 
 function App() {
 
@@ -36,8 +35,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/helperchat" element={loggedInUser.role === 'helper' && <HelperChat />}/>
-        <Route path="/userchat" element={loggedInUser.role === 'user' && <UserChat />}/>
+        <Route path="/chat" element={<Chat />}/>
       </Routes>
     </div>
   );
