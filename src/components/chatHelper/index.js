@@ -4,6 +4,7 @@ import uuid from 'react-uuid';
 import './style.scss';
 
 const HelperChat = ({ sendMsg }) => {
+    debugger
 
     const chatUsers = useSelector((state) => state.user.connectedChatUsers);
     const messages = useSelector((state) => state.user.messages);

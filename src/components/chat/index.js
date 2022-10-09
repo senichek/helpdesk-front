@@ -11,6 +11,7 @@ import HelperChat from '../chatHelper';
 // Private messaging:   https://socket.io/get-started/private-messaging-part-1/
 
 const Chat = () => {
+    debugger
 
     const loggedInUser = useSelector((state) => state.user);
 
@@ -20,6 +21,7 @@ const Chat = () => {
     // users join their own room by default (room = userId)
     const recipient = useSelector((state) => state.user.recipient);
     const messages = useSelector((state) => state.user.messages);
+    const chatUsers = useSelector((state) => state.user.setConnectedChatUsers);
 
     const dispatch = useDispatch();
     
@@ -41,7 +43,7 @@ const Chat = () => {
             socket.current.off('connected_chat_users');
             socket.current.disconnect();
             };
-    }, []);
+    }, [chatUsers]);
 
     useEffect(() => {
         // If recipient changes, we join another room i.e. the room
