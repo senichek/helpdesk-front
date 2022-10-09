@@ -8,19 +8,13 @@
     gap: 1rem;
   }
 
-  &__messages {
-    background-color: #fff;
-    min-height: 20rem;
-    border-radius: 10px;
-    margin-bottom: 0.5rem;
-  }
 
   &__message {
     border-radius: 10px;
     color: #000;
   }
 
-  &__user-name {
+  &__user_name {
     border: 1px solid wheat;
     background-color: #19a93f;
     padding: 0.5rem 1rem;
@@ -28,7 +22,7 @@
     margin-bottom: 0.3rem;
   }
 
-  &__user-name:hover {
+  &__user_name:hover {
     cursor: pointer;
   }
 }

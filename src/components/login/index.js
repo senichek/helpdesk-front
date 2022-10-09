@@ -13,16 +13,14 @@ const Login = () => {
     
 
     const isLogged = useSelector((state) => state.user.logged);
-    const userRole = useSelector((state) => state.user.role);
 
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (userRole === 'helper') {
-            return navigate('/helperchat');
-        }; 
-        if (userRole === 'user') {
-            return navigate('/userchat');
+        if (isLogged) {
+            return navigate('/chat');
+        } else {
+            return navigate('/');
         }
     }, [isLogged]);
 

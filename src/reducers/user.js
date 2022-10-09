@@ -5,7 +5,9 @@ import {
   LOGOUT,
   SET_SIMPLE_USERS,
   SET_CONNECTED_CHAT_USERS,
-  SET_RECIPIENT
+  SET_RECIPIENT,
+  SET_INPUT_MSG,
+  SET_MSG
 } from "../store/actions";
 
 export const initialState = {
@@ -19,7 +21,9 @@ export const initialState = {
   connectedChatUsers: [],
   showSignUpSuccessMessage: false,
   showLoginFailureMessage: false,
-  recipient: "" // Person you write (send the message) to.
+  recipient: "", // Person you write (send the message) to.
+  inputMsg: "",
+  messages: [],
 };
 
 const userReducer = (state = initialState, action = {}) => {
@@ -47,11 +51,21 @@ const userReducer = (state = initialState, action = {}) => {
         ...state,
         connectedChatUsers: action.payload,
         };
-        case SET_RECIPIENT:
-          return {
-            ...state,
-            recipient: action.payload,
-            };
+    case SET_RECIPIENT:
+      return {
+        ...state,
+        recipient: action.payload,
+        };
+    case SET_INPUT_MSG:
+      return {
+        ...state,
+        inputMsg: action.payload,
+      };
+    case SET_MSG:
+      return {
+        ...state,
+        messages: [...state.messages, action.payload],
+        };
     default:
       return state;
   }
