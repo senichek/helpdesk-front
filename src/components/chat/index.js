@@ -11,8 +11,7 @@ import HelperChat from '../chatHelper';
 // Private messaging:   https://socket.io/get-started/private-messaging-part-1/
 
 const Chat = () => {
-    debugger
-
+    
     const loggedInUser = useSelector((state) => state.user);
 
     let socket = useRef(null);
@@ -34,8 +33,8 @@ const Chat = () => {
         socket.current.connect();
 
         socket.current.on("connected_chat_users", (users) => {
-            console.log("Connected chat users >>>", users);
             debugger
+            console.log("Connected chat users >>>", users);
             dispatch(setConnectedChatUsers(users));
             });
 
