@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { CHAT_SERVER_URL } from '../../constants';
-import { setConnectedChatUsers, setHelperConnected, setMsg } from '../../store/actions';
+import { setConnectedChatUsers, setHelperConnected, setHelperJoinedYourChat, setMsg } from '../../store/actions';
 import io from 'socket.io-client';
 import uuid from 'react-uuid';
 import './style.scss';
@@ -42,9 +42,15 @@ const Chat = () => {
             dispatch(setHelperConnected(true));
             });
 
+        // helper_joined_your_chat
+        socket.current.on('helper_joined_your_chat', (data) => {
+            dispatch(setHelperJoinedYourChat(true));
+        });
+
         return () => {
             socket.current.off('connected_chat_users');
             socket.current.off('helper_connected');
+            socket.current.off('helper_joined_your_chat');
             socket.current.disconnect();
             };
     }, [chatUsers]);
@@ -53,7 +59,12 @@ const Chat = () => {
         // If recipient changes, we join another room i.e. the room
         // of new recipient (recipient = room)
         if (recipient) {
-            socket.current.emit('join_room', recipient);
+            //socket.current.emit('join_room', recipient);
+            socket.current.emit('join_room', {
+                recipient,
+                role: loggedInUser.role,
+                loggedInUserId: loggedInUser.id
+            });
         }
 
         return () => {

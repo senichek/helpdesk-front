@@ -8,7 +8,8 @@ import {
   SET_RECIPIENT,
   SET_INPUT_MSG,
   SET_MSG,
-  HELPER_CONNECTED
+  HELPER_CONNECTED,
+  HELPER_JOINED_YOUR_CHAT
 } from "../store/actions";
 
 export const initialState = {
@@ -25,7 +26,8 @@ export const initialState = {
   recipient: "", // Person you write (send the message) to.
   inputMsg: "",
   messages: [],
-  helperConnected: false
+  helperConnected: false,
+  helperJoinedYourChat: false
 };
 
 const userReducer = (state = initialState, action = {}) => {
@@ -72,6 +74,11 @@ const userReducer = (state = initialState, action = {}) => {
       return {
         ...state,
         helperConnected: action.payload
+      };
+    case HELPER_JOINED_YOUR_CHAT:
+      return {
+        ...state,
+        helperJoinedYourChat: action.payload
       };
     default:
       return state;
