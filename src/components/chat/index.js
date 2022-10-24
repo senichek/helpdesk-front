@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { CHAT_SERVER_URL } from '../../constants';
-import { setConnectedChatUsers, setMsg } from '../../store/actions';
+import { setConnectedChatUsers, setHelperConnected, setMsg } from '../../store/actions';
 import io from 'socket.io-client';
 import uuid from 'react-uuid';
 import './style.scss';
@@ -33,13 +33,18 @@ const Chat = () => {
         socket.current.connect();
 
         socket.current.on("connected_chat_users", (users) => {
-            debugger
             console.log("Connected chat users >>>", users);
             dispatch(setConnectedChatUsers(users));
             });
 
+        // helper_connected
+        socket.current.on("helper_connected", () => {
+            dispatch(setHelperConnected(true));
+            });
+
         return () => {
             socket.current.off('connected_chat_users');
+            socket.current.off('helper_connected');
             socket.current.disconnect();
             };
     }, [chatUsers]);
