@@ -6,6 +6,7 @@ const UserChat = ({ sendMsg }) => {
 
     const inputMsg = useSelector((state) => state.user.inputMsg);
     const messages = useSelector((state) => state.user.messages);
+    const helperConnected = useSelector((state) => state.user.helperConnected);
 
     const dispatch = useDispatch();
 
@@ -23,15 +24,20 @@ const UserChat = ({ sendMsg }) => {
     }
 
     return (
-        <div className="user-chat">
-            <div className="user-chat__messages">
-                {messages.map(msg => (<div className="user-chat__single_msg" key={msg.id}>
-                    {msg.text}
+        <>
+            {helperConnected ? (
+                <div className="user-chat">
+                    <div className="user-chat__messages">
+                        {messages.map(msg => (<div className="user-chat__single_msg" key={msg.id}>
+                        {msg.text}
                 </div>))}
-            </div>
-            <textarea className="user-chat__text_input" rows="5" cols="33" onChange={handleInputChange} defaultValue={inputMsg}></textarea>
-            <button className="user-chat__send_btn" onClick={handleSendMsg}>Send</button>
-        </div>
+                    </div>
+                        <textarea className="user-chat__text_input" rows="5" cols="33" onChange={handleInputChange} defaultValue={inputMsg}></textarea>
+                        <button className="user-chat__send_btn" onClick={handleSendMsg}>Send</button>
+                </div>
+            ) : <div className="user-chat__no_helpers">Chat is unavailable because there are no helpers online, sorry about that.</div>}
+        </>
+        
     );
 };
 
