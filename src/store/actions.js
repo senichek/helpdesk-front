@@ -11,6 +11,7 @@ export const SET_RECIPIENT = 'SET_RECIPIENT';
 export const SET_INPUT_MSG = 'SET_INPUT_MSG';
 export const SET_MSG = 'SET_MSG';
 export const HELPER_CONNECTED = 'HELPER_CONNECTED';
+export const HELPER_JOINED_YOUR_CHAT = 'HELPER_JOINED_YOUR_CHAT';
 
 
 export const login = (data) => ({
@@ -73,5 +74,10 @@ export const setMsg = (data) => ({
 
 export const setHelperConnected = (data) => ({
     type: HELPER_CONNECTED,
+    payload: data,
+});
+
+export const setHelperJoinedYourChat = (data) => ({
+    type: HELPER_JOINED_YOUR_CHAT,
     payload: data,
 });
