@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { setInputMsg, setRecipient } from '../../store/actions';
+import { useRef, useEffect } from 'react';
 import uuid from 'react-uuid';
 import './style.scss';
 import { dateFormatter } from '../../utils/dateFormatter';
@@ -10,6 +11,19 @@ const HelperChat = ({ sendMsg }) => {
     const messages = useSelector((state) => state.user.messages);
     const inputMsg = useSelector((state) => state.user.inputMsg);
     const loggedInUser = useSelector((state) => state.user);
+
+    const messageRef = useRef(null);
+
+    // Scroll the list of messages to the last message automatically.
+    useEffect(() => {
+        if (messageRef.current) {
+            messageRef.current.scrollIntoView(
+              {
+                behavior: 'smooth',
+                block: 'end',
+              })
+          }
+    }, [messages])
 
     const dispatch = useDispatch();
 
@@ -42,10 +56,10 @@ const HelperChat = ({ sendMsg }) => {
             <div className="helper-chat__working_zone">
             <div className="helper-chat__messages">
                 {messages.map(msg => (
-                <div className="helper-chat__single_msg" key={msg.id}>
-                <div className="helper-chat__single_msg_author">From: {msg.author}</div>
-                <div className="helper-chat__single_msg_txt">{msg.text}</div>
-                <div className="helper-chat__single_msg_date">{dateFormatter(msg.date)}</div>
+                <div className={loggedInUser.id !== msg.author ? 'helper-chat__single_msg_not_yours' : 'helper-chat__single_msg'} key={msg.id} ref={messageRef}>
+                    <div className="helper-chat__single_msg_author">From: {msg.author}</div>
+                    <div className="helper-chat__single_msg_txt">{msg.text}</div>
+                    <div className="helper-chat__single_msg_date">{dateFormatter(msg.date)}</div>
                 </div>
                 ))}
             </div>
