@@ -2,16 +2,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setInputMsg, setRecipient } from '../../store/actions';
 import uuid from 'react-uuid';
 import './style.scss';
+import { dateFormatter } from '../../utils/dateFormatter';
 
 const HelperChat = ({ sendMsg }) => {
 
     const chatUsers = useSelector((state) => state.user.connectedChatUsers);
     const messages = useSelector((state) => state.user.messages);
     const inputMsg = useSelector((state) => state.user.inputMsg);
-
+    const loggedInUser = useSelector((state) => state.user);
 
     const dispatch = useDispatch();
-
 
     const handleRecipient = (userId) => {
         dispatch(setRecipient(userId));
@@ -25,7 +25,8 @@ const HelperChat = ({ sendMsg }) => {
         const message = {
             id: uuid(),
             text: inputMsg,
-            date: new Date()
+            date: new Date(),
+            author: loggedInUser.id
         }
         sendMsg(message);
     }
@@ -40,9 +41,13 @@ const HelperChat = ({ sendMsg }) => {
             </div>
             <div className="helper-chat__working_zone">
             <div className="helper-chat__messages">
-                {messages.map(msg => (<div className="helper-chat__single_msg" key={msg.id}>
-                    {msg.text}
-                </div>))}
+                {messages.map(msg => (
+                <div className="helper-chat__single_msg" key={msg.id}>
+                <div className="helper-chat__single_msg_author">From: {msg.author}</div>
+                <div className="helper-chat__single_msg_txt">{msg.text}</div>
+                <div className="helper-chat__single_msg_date">{dateFormatter(msg.date)}</div>
+                </div>
+                ))}
             </div>
             <textarea className="helper-chat__text_input" rows="5" cols="33" onChange={handleInputChange} defaultValue={inputMsg}></textarea>
             <button className="helper-chat__send_btn" onClick={handleSendMsg}>Send</button>
