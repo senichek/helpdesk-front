@@ -77,8 +77,9 @@ const Chat = () => {
         socket.current.on('receive_msg', (message) => {
             const msg = {
                 id: uuid(),
-                text: message,
-                date: new Date()
+                text: message.text,
+                date: new Date(),
+                author: message.author
             }
             dispatch(setMsg(msg)); // Add message to the collection of existing ones
         });
@@ -93,13 +94,14 @@ const Chat = () => {
         if (msg.text === null || msg.text === '') {
             return;
         }
-
-        socket.current.emit('send_msg', msg.text, recipient);
+        //socket.current.emit('send_msg', msg.text, recipient);
+        socket.current.emit('send_msg', msg, recipient);
 
         const message = {
             id: uuid(),
             text: msg.text,
-            date: new Date()
+            date: new Date(),
+            author: msg.author
         }
         dispatch(setMsg(message)); // Add message to the collection of existing ones
 

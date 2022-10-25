@@ -25,4 +25,49 @@
   &__user_name:hover {
     cursor: pointer;
   }
+
+  &__send_btn {
+    display: block;
+    width: 7rem;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  &__messages {
+    background-color: rgb(255, 255, 255);
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.2rem;
+    width: 25rem;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 0.3rem;
+    border-radius: 5px;
+  }
+
+  &__single_msg {
+    background-color: blueviolet;
+    padding: 0.5rem;
+    border-radius: 10px;
+    margin-bottom: 0.3rem;
+  }
+
+  &__single_msg_author {
+    text-align: end;
+    font-size: 0.8rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  &__single_msg_txt {
+    text-align: start;
+    font-size: 1.3rem;
+  }
+
+  &__single_msg_date {
+    font-style: italic;
+    font-size: 0.8rem;
+    text-align: end;
+  }
 }
