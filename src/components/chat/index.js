@@ -80,7 +80,8 @@ const Chat = () => {
                 id: uuid(),
                 text: message.text,
                 date: new Date(),
-                author: message.author
+                author: message.author,
+                chatId: message.chatId
             }
             dispatch(setMsg(msg)); // Add message to the collection of existing ones
         });
@@ -102,7 +103,8 @@ const Chat = () => {
             id: uuid(),
             text: msg.text,
             date: new Date(),
-            author: msg.author
+            author: msg.author,
+            chatId: msg.chatId
         }
         dispatch(setMsg(message)); // Add message to the collection of existing ones
 

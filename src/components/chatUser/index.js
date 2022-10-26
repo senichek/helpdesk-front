@@ -14,6 +14,7 @@ const UserChat = ({ sendMsg }) => {
     const helperConnected = useSelector((state) => state.user.helperConnected);
     const helperJoinedYourChat = useSelector((state) => state.user.helperJoinedYourChat);
     const loggedInUser = useSelector((state) => state.user);
+    const chatUsers = useSelector((state) => state.user.connectedChatUsers);
 
     const messageRef = useRef(null);
 
@@ -39,11 +40,22 @@ const UserChat = ({ sendMsg }) => {
             id: uuid(),
             text: inputMsg,
             date: new Date(),
-            author: loggedInUser.id
+            author: loggedInUser.id,
+            // Chat always belongs to the user (not to the helper).
+            // If you are logged in as 'helper' the chatID = recipient.
+            // If you are logged in as @user' the chatID = loggedInUser.id.
+            chatId: loggedInUser.id
         }
         sendMsg(message);
+        dispatch(setInputMsg(''));
     }
 
+    const onEnterPress = (event) => {
+        if(event.keyCode === 13 && event.shiftKey === false) {
+            event.preventDefault();
+            handleSendMsg();
+        }
+    }
 
  return (
     <>
@@ -74,13 +86,13 @@ const UserChat = ({ sendMsg }) => {
                     <div className="user-chat__messages">
                         {messages.map(msg => (
                         <div className={loggedInUser.id !== msg.author ? 'user-chat__single_msg_not_yours' : 'user-chat__single_msg'} key={msg.id} ref={messageRef}>
-                            <div className="user-chat__single_msg_author">From: {msg.author}</div>
+                            <div className="user-chat__single_msg_author">From: {chatUsers.find(el => el.userId === msg.author).nickname}</div>
                             <div className="user-chat__single_msg_txt">{msg.text}</div>
                             <div className="user-chat__single_msg_date">{dateFormatter(msg.date)}</div>
                         </div>
                         ))}
                     </div>
-                        <textarea className="user-chat__text_input" rows="5" cols="33" onChange={handleInputChange} defaultValue={inputMsg}></textarea>
+                        <textarea className="user-chat__text_input" rows="5" cols="33" onChange={handleInputChange} value={inputMsg} onKeyDown={onEnterPress}></textarea>
                         <button className="user-chat__send_btn" onClick={handleSendMsg}>Send</button>
                 </div>
         }
