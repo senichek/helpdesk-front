@@ -28,7 +28,8 @@ const Chat = () => {
         socket.current = io(CHAT_SERVER_URL, { autoConnect: false });
         socket.current.auth = { 
             username: loggedInUser.id,
-            role: loggedInUser.role
+            role: loggedInUser.role,
+            nickname: loggedInUser.name
         };
         socket.current.connect();
 

@@ -50,7 +50,7 @@ const HelperChat = ({ sendMsg }) => {
             <div className="helper-chat__list_of_users">
                 {chatUsers.map(usr => (
                     usr.role === 'user' && 
-                    <div className="helper-chat__user_name" key={usr.userId} onClick={() => handleRecipient(usr.userId)} >{usr.userId}</div>
+                    <div className="helper-chat__user_name" key={usr.userId} onClick={() => handleRecipient(usr.userId)} >{usr.nickname}</div>
                 ))}
             </div>
             <div className="helper-chat__working_zone">
