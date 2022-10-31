@@ -65,14 +65,38 @@ const Login = () => {
         });
     } */
 
+    const handleHelperLogin = () => {
+        const helper = {
+            email: 'agent_one@gmail.com',
+            password: 'pass111',
+        };
+
+        dispatch(login(helper));
+    };
+
+    const handleUserLogin = () => {
+        const user = {
+            email: 'user_one@gmail.com',
+            password: 'pass111',
+        };
+
+        dispatch(login(user));
+    };
+
     return (
-        <form className="signup-form" onSubmit={handleLoginSubmit}>
-            <h1 className="signup-form__title">Login</h1>
-            <input className="signup-form__input" type="email" required value={inputEmail} onChange={onInputChange} placeholder="Email" name="email" />
-            <input className="signup-form__input" type="password" required value={inputPassword} onChange={onInputChange} placeholder="Password" name="password" />
-            <button className="signup-form__button" type="submit">Submit</button>
-            <Link to="/signup">Create account</Link>
-        </form>
+        <>
+            <form className="login-form" onSubmit={handleLoginSubmit}>
+                <h1 className="login-form__title">Login</h1>
+                <input className="login-form__input" type="email" required value={inputEmail} onChange={onInputChange} placeholder="Email" name="email" />
+                <input className="login-form__input" type="password" required value={inputPassword} onChange={onInputChange} placeholder="Password" name="password" />
+                <button className="login-form__button" type="submit">Submit</button>
+                <Link to="/signup">Create account</Link>
+            </form>
+            <div className="login-form__hardcoded_btns">
+                <button className="login-form__hardcoded_helper" onClick={handleHelperLogin}>HELPER</button>
+                <button className="login-form__hardcoded_user" onClick={handleUserLogin}>USER</button>
+            </div>
+        </>
     );
 };
 
