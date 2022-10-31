@@ -62,6 +62,10 @@ const HelperChat = ({ sendMsg }) => {
     }
 
     return (
+        <>
+        {recipient === loggedInUser.id &&
+                <div>Click  user name you'd like to chat with:</div>
+        }
         <div className="helper-chat">
             <div className="helper-chat__list_of_users">
                 {chatUsers.map(usr => (
@@ -70,9 +74,8 @@ const HelperChat = ({ sendMsg }) => {
                 ))}
             </div>
             <div className="helper-chat__working_zone">
-                {recipient !== loggedInUser.id && <div>You are chatting with {chatUsers.find(el => el.userId === recipient).nickname}</div>}
+                {recipient !== loggedInUser.id && <div>You are chatting with <em>{chatUsers.find(el => el.userId === recipient).nickname}</em></div>}
             <div className="helper-chat__messages">
-            {/* options.filter(opt => !opt.assigned).map(opt => someNewObject) */}
                 {messages.filter(msg => msg.chatId === recipient).map(msg => (
                 <div className={loggedInUser.id !== msg.author ? 'helper-chat__single_msg_not_yours' : 'helper-chat__single_msg'} key={msg.id} ref={messageRef}>
                     <div className="helper-chat__single_msg_author">From: {chatUsers.find(el => el.userId === msg.author).nickname}</div>
@@ -81,10 +84,15 @@ const HelperChat = ({ sendMsg }) => {
                 </div>
                 ))}
             </div>
-            <textarea className="helper-chat__text_input" rows="5" cols="33" onChange={handleInputChange} value={inputMsg} onKeyDown={onEnterPress}></textarea>
-            <button className="helper-chat__send_btn" onClick={handleSendMsg}>Send</button>
+            {recipient !== loggedInUser.id && 
+                <>
+                    <textarea className="helper-chat__text_input" rows="5" cols="33" onChange={handleInputChange} value={inputMsg} onKeyDown={onEnterPress}></textarea>
+                    <button className="helper-chat__send_btn" onClick={handleSendMsg}>Send</button>
+                </>
+            }
             </div>
         </div>
+        </>
     );
 };
 
