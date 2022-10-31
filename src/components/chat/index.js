@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { CHAT_SERVER_URL } from '../../constants';
-import { setConnectedChatUsers, setHelperConnected, setHelperJoinedYourChat, setMsg } from '../../store/actions';
+import { setConnectedChatUsers, setHelperConnected, setHelperJoinedYourChat, setMsg, setRecipient } from '../../store/actions';
 import io from 'socket.io-client';
 import uuid from 'react-uuid';
 import './style.scss';
@@ -46,6 +46,14 @@ const Chat = () => {
         // helper_joined_your_chat
         socket.current.on('helper_joined_your_chat', (data) => {
             dispatch(setHelperJoinedYourChat(true));
+        });
+
+        socket.current.on('logout', (socketId) => {
+            // The recipient is the user you are talking to, but if this user has logged out
+            // the recipient becomes you, i.e. the logged-in user.
+            dispatch(setRecipient(loggedInUser.id));
+            // Remove the user who has logged out from the list of connected users.
+            dispatch(setConnectedChatUsers(chatUsers.filter(usr => usr.socketId !== socketId)));
         });
 
         return () => {
