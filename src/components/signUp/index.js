@@ -127,7 +127,7 @@ const Signup = () => {
             <input className="signup-form__input" type="password" required value={inputPassword} onChange={onInputChange} placeholder="Password" name="password" />
             <input className="signup-form__input" type="password" required value={confirmPassword} onChange={onInputChange} placeholder="Confirm password" name="confirmPassword" />
             <button className="signup-form__button" type="submit">Submit</button>
-            <Link to="/">You have an account?</Link>
+            <Link to="/login">You have an account?</Link>
         </form>
     );
 };

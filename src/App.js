@@ -7,6 +7,7 @@ import Login from "./components/login";
 import Signup from "./components/signUp";
 import Navbar from "./components/navbar";
 import Chat from "./components/chat";
+import Welcome from "./components/welcome";
 
 function App() {
 
@@ -33,7 +34,8 @@ function App() {
     <div className="App">
       <Navbar />
       <Routes>
-        <Route path="/" element={<Login />} />
+        <Route path="/" element={<Welcome />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/chat" element={<Chat />}/>
       </Routes>
