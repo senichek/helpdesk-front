@@ -20,7 +20,7 @@ const Login = () => {
         if (isLogged) {
             return navigate('/chat');
         } else {
-            return navigate('/');
+            return navigate('/login');
         }
     }, [isLogged]);
 
