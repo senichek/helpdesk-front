@@ -49,7 +49,7 @@
     padding-right: 0.5rem;
     padding-top: 0.5rem;
     padding-bottom: 0.2rem;
-    width: 25rem;
+    width: 22rem;
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 0.3rem;
@@ -93,5 +93,18 @@
     font-style: italic;
     font-size: 0.8rem;
     text-align: end;
+  }
+}
+
+@media screen and (max-width: 568px) {
+
+  .helper-chat {
+      display: block;
+
+      &__user_name {
+        width: 10rem;
+        margin-left: auto;
+        margin-right: auto;
+      }
   }
 }
