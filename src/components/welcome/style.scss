@@ -50,6 +50,7 @@ body {
     &__links {
         display: flex;
         justify-content: space-between;
+        gap: 0.5rem
     }
 
     &__link {
@@ -67,6 +68,15 @@ body {
         background-color: var(--intro-link-hover-color);
         transition: 500ms;
     }
+
+    &__list {
+        list-style: auto;
+        text-align: start;
+    }
+}
+
+em {
+    font-weight: bold;
 }
        
 .footer-text {

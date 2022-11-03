@@ -25,13 +25,20 @@ const Chat = () => {
     const dispatch = useDispatch();
     
     useEffect(() => {
-        socket.current = io(CHAT_SERVER_URL, { autoConnect: false });
+        socket.current = io(CHAT_SERVER_URL, { autoConnect: false, transports: [ "websocket", "polling" ], secure: true });
         socket.current.auth = { 
             username: loggedInUser.id,
             role: loggedInUser.role,
             nickname: loggedInUser.name
         };
+
+        console.log("logged-in user >>>", loggedInUser);
+
         socket.current.connect();
+
+        socket.current.on("connect_error", (err) => {
+            console.log(`Socket connect_error due to ${err.message}`);
+          });
 
         socket.current.on("connected_chat_users", (users) => {
             console.log("Connected chat users >>>", users);
